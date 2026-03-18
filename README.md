@@ -116,3 +116,11 @@ iPhone シミュレータ、または実機を選択して実行してくださ�
 ## ライセンス
 
 MIT
+
+## 画面ScreenShot
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin: 1.5em 0;">
+  <img src="https://github.com/user-attachments/assets/ec741947-9461-4b4f-a1b8-36c956585db0" alt="ss1" style="width:25%; height:auto; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+  <img src="https://github.com/user-attachments/assets/9609d86d-f3e8-4590-93a9-d658a9478365" alt="ss2" style="width:25%; height:auto; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+  <img src="https://github.com/user-attachments/assets/3adb3a2a-a229-45d7-8bed-9c4c62738c9e" alt="ss3" style="width:25%; height:auto; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+</div>
