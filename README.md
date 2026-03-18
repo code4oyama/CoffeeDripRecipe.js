@@ -1,6 +1,7 @@
 # Coffee Drip Recipe App
 
 Capacitor 5 とバニラ JavaScript で作成した、コーヒードリップ用レシピ計算アプリです。
+iOS と Android OS に Deploy できるスマホアプリです。
 
 ## 概要
 
