@@ -1,0 +1,6 @@
+
+open www/index.html
+
+npx cap sync android
+
+

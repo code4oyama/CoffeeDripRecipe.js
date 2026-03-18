@@ -1,0 +1,297 @@
+/* コーヒードリップレシピアプリのスタイル */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: white;
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #8b5a3c 0%, #6f4e37 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+main {
+    padding: 30px 20px;
+}
+
+.input-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 16px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-group-three {
+    gap: 10px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 20px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.radio-group-three .radio-label {
+    padding: 12px 15px;
+    justify-content: center;
+    text-align: center;
+}
+
+.radio-label span {
+    line-height: 1.4;
+}
+
+.radio-label:hover {
+    border-color: #8b5a3c;
+    transform: translateY(-2px);
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + span {
+    font-weight: 600;
+    color: #8b5a3c;
+}
+
+.radio-label:has(input[type="radio"]:checked) {
+    border-color: #8b5a3c;
+    background: #fff8f3;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #8b5a3c;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #8b5a3c 0%, #6f4e37 100%);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 90, 60, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 90, 60, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.result-section {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #6f4e37;
+}
+
+.result-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #8b5a3c;
+}
+
+.recipe-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border-left: 4px solid #8b5a3c;
+}
+
+.recipe-card-highlight {
+    background: linear-gradient(135deg, #fff8f3 0%, #fff 100%);
+    border-left: 5px solid #8b5a3c;
+    box-shadow: 0 4px 12px rgba(139, 90, 60, 0.15);
+}
+
+.recipe-card-highlight .recipe-value {
+    font-size: 22px;
+    color: #6f4e37;
+}
+
+.recipe-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.recipe-item:last-child {
+    border-bottom: none;
+}
+
+.recipe-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.recipe-value {
+    font-weight: 700;
+    color: #8b5a3c;
+    font-size: 18px;
+}
+
+.pour-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pour-step {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.pour-step:hover {
+    border-color: #8b5a3c;
+    transform: translateX(5px);
+}
+
+.pour-step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.pour-step-number {
+    font-weight: 600;
+    color: #6f4e37;
+    font-size: 16px;
+}
+
+.pour-step-time {
+    font-size: 14px;
+    color: #6c757d;
+    background: #e9ecef;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+.pour-step-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8b5a3c;
+}
+
+footer {
+    background: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 15px;
+    }
+    
+    header h1 {
+        font-size: 24px;
+    }
+    
+    main {
+        padding: 20px 15px;
+    }
+    
+    .input-section {
+        padding: 20px;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+    }
+}

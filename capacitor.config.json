@@ -1,0 +1,11 @@
+{
+  "appId": "com.example.coffeedriprecipe",
+  "appName": "Coffee Drip Recipe",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
