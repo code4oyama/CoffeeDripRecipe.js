@@ -14,6 +14,31 @@
 
         <main>
             <div class="input-section">
+                                <div class="form-group">
+                                    <label for="roast-level">焙煎度:</label>
+                                    <div class="radio-group radio-group-five">
+                                        <label class="radio-label">
+                                            <input type="radio" name="roast-level" value="lightest" checked>
+                                            <span>浅煎り</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="roast-level" value="light">
+                                            <span>やや浅煎り</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="roast-level" value="medium">
+                                            <span>中煎り</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="roast-level" value="dark">
+                                            <span>やや深煎り</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="roast-level" value="darkest">
+                                            <span>深煎り</span>
+                                        </label>
+                                    </div>
+                                </div>
                 <div class="form-group">
                     <label for="brew-type">タイプ:</label>
                     <div class="radio-group">
@@ -107,6 +132,14 @@
                         <span class="recipe-value" id="brew-ratio"></span>
                     </div>
                     <div class="recipe-item">
+                        <span class="recipe-label">お湯の温度:</span>
+                        <span class="recipe-value" id="water-temp"></span>
+                    </div>
+                    <div class="recipe-item">
+                        <span class="recipe-label">豆の挽き具合:</span>
+                        <span class="recipe-value" id="grind-size"></span>
+                    </div>
+                    <div class="recipe-item">
                         <span class="recipe-label">コーヒー豆の量:</span>
                         <span class="recipe-value" id="coffee-beans"></span>
                     </div>
@@ -128,7 +161,7 @@
         </main>
 
         <footer>
-            <p>330mlカップを想定しています</p>
+            <p>&copy; mirai-system.org</p>
         </footer>
     </div>
 

@@ -1,5 +1,22 @@
 // コーヒードリップレシピ計算アプリ
 
+// --- 画面スリープ防止（KeepAwakeプラグイン） ---
+document.addEventListener('DOMContentLoaded', async function() {
+    if (window.Capacitor && window.Capacitor.isNativePlatform) {
+        try {
+            const { KeepAwake } = window.Capacitor.Plugins || {};
+            if (KeepAwake && typeof KeepAwake.keepAwake === 'function') {
+                await KeepAwake.keepAwake();
+                console.log('KeepAwake: スリープ防止を有効化しました');
+            } else {
+                console.warn('KeepAwakeプラグインが見つかりません');
+            }
+        } catch (e) {
+            console.error('KeepAwakeプラグイン呼び出しエラー', e);
+        }
+    }
+});
+
 // 定数
 const CUP_SIZE = {
     small: 250,   // ml
@@ -62,6 +79,7 @@ function calculateRecipe() {
     const cups = parseInt(document.getElementById('cups').value);
     const brewType = document.querySelector('input[name="brew-type"]:checked').value;
     const strength = document.querySelector('input[name="strength"]:checked').value;
+    const roastLevel = document.querySelector('input[name="roast-level"]:checked').value;
     const cupSize = document.querySelector('input[name="cup-size"]:checked').value;
     const cupSizeMl = CUP_SIZE[cupSize];
     const waterRatio = parseFloat(document.getElementById('water-ratio').value);
@@ -86,18 +104,110 @@ function calculateRecipe() {
     const totalWater = cupSizeMl * cups;
     const coffeeBeans = Math.round(totalWater / normalizedWaterRatio);
     
+    // 5段階焙煎度・濃さごとの推奨値
+    let waterTemp = '';
+    let grindSize = '';
+    let roastLabel = '';
+    // 焙煎度×濃さごとの挽き具合マトリクス
+    // 基本：浅煎りほど粗く、深煎りほど細かく。濃いめほど細かく、薄めほど粗く。
+    // 挽き具合の説明付き（粒の大きさや例え）
+    const grindMatrix = {
+        lightest: {
+            light: '粗挽き（ザラメ糖くらいの粒）',
+            normal: '中粗挽き（グラニュー糖くらいの粒）',
+            strong: '中挽き（上白糖くらいの粒）'
+        },
+        light: {
+            light: '中粗挽き（グラニュー糖くらいの粒）',
+            normal: '中挽き（上白糖くらいの粒）',
+            strong: '中細挽き（細かい砂糖くらいの粒）'
+        },
+        medium: {
+            light: '中挽き（上白糖くらいの粒）',
+            normal: '中細挽き（細かい砂糖くらいの粒）',
+            strong: '細挽き（小麦粉よりやや粗い）'
+        },
+        dark: {
+            light: '中細挽き（細かい砂糖くらいの粒）',
+            normal: '細挽き（小麦粉よりやや粗い）',
+            strong: '極細挽き（小麦粉のような粒）'
+        },
+        darkest: {
+            light: '細挽き（小麦粉よりやや粗い）',
+            normal: '極細挽き（小麦粉のような粒）',
+            strong: '極細挽き（小麦粉のような粒）'
+        }
+    };
+    // 温度は従来通り
+    switch (roastLevel) {
+        case 'lightest':
+            roastLabel = '浅煎り';
+            if (strength === 'light') {
+                waterTemp = '94〜97℃（高め）';
+            } else if (strength === 'strong') {
+                waterTemp = '97℃前後（高め）';
+            } else {
+                waterTemp = '95〜97℃';
+            }
+            break;
+        case 'light':
+            roastLabel = 'やや浅煎り';
+            if (strength === 'light') {
+                waterTemp = '93〜96℃';
+            } else if (strength === 'strong') {
+                waterTemp = '96℃前後';
+            } else {
+                waterTemp = '94〜96℃';
+            }
+            break;
+        case 'medium':
+            roastLabel = '中煎り';
+            if (strength === 'light') {
+                waterTemp = '91〜94℃';
+            } else if (strength === 'strong') {
+                waterTemp = '94〜95℃';
+            } else {
+                waterTemp = '92〜94℃';
+            }
+            break;
+        case 'dark':
+            roastLabel = 'やや深煎り';
+            if (strength === 'light') {
+                waterTemp = '89〜92℃';
+            } else if (strength === 'strong') {
+                waterTemp = '92〜93℃';
+            } else {
+                waterTemp = '90〜92℃';
+            }
+            break;
+        case 'darkest':
+        default:
+            roastLabel = '深煎り';
+            if (strength === 'light') {
+                waterTemp = '87〜90℃（低め）';
+            } else if (strength === 'strong') {
+                waterTemp = '90〜91℃（やや高め）';
+            } else {
+                waterTemp = '88〜90℃';
+            }
+            break;
+    }
+    grindSize = grindMatrix[roastLevel][strength] || '中挽き';
     const recipe = {
         cups: cups,
         cupSize: cupSize,
         cupSizeMl: cupSizeMl,
         brewType: brewType,
         strength: strength,
+        roastLevel: roastLevel,
         waterRatio: normalizedWaterRatio,
         warmupWater: brewType === 'hot' ? WARMUP_WATER * cups : 0,
         iceAmount: brewType === 'iced' ? ICE_AMOUNT * cups : 0,
         coffeeBeans: coffeeBeans,
         totalWater: totalWater,
-        brewTime: BASE_BREW_TIME + (cups - 1) * 30 // カップ数に応じて調整
+        brewTime: BASE_BREW_TIME + (cups - 1) * 30, // カップ数に応じて調整
+        waterTemp: waterTemp,
+        grindSize: grindSize
     };
     
     // お湯を注ぐステップを計算
@@ -179,15 +289,25 @@ function displayRecipe(recipe, pourSteps) {
         iceCard.style.display = 'none';
     }
     
+
+
     // コーヒー豆の量
     document.getElementById('coffee-beans').textContent = `${recipe.coffeeBeans} g`;
 
     // 豆:お湯の比率
     document.getElementById('brew-ratio').textContent = `1:${recipe.waterRatio.toFixed(1)}`;
-    
+
+
+
+    // お湯の温度
+    document.getElementById('water-temp').textContent = recipe.waterTemp;
+
+    // 挽き具合
+    document.getElementById('grind-size').textContent = recipe.grindSize;
+
     // お湯の量
     document.getElementById('total-water').textContent = `${recipe.totalWater} ml`;
-    
+
     // 抽出時間
     const minutes = Math.floor(recipe.brewTime / 60);
     const seconds = recipe.brewTime % 60;
@@ -200,19 +320,26 @@ function displayRecipe(recipe, pourSteps) {
     pourSteps.forEach((step, index) => {
         const stepDiv = document.createElement('div');
         stepDiv.className = 'pour-step';
-        
+
         const timeMinutes = Math.floor(step.time / 60);
         const timeSeconds = step.time % 60;
         const timeStr = step.time === 0 ? '開始時' : `${timeMinutes}分${timeSeconds}秒後`;
-        
+
+        // 1回目（蒸らし）にタイマー開始の案内を追加
+        let timerNote = '';
+        if (index === 0) {
+            timerNote = '<div class="timer-note">※このタイミングでタイマーをスタート</div>';
+        }
+
         stepDiv.innerHTML = `
             <div class="pour-step-header">
                 <span class="pour-step-number">${step.description}</span>
                 <span class="pour-step-time">${timeStr}</span>
             </div>
             <div class="pour-step-amount">${step.amount} ml（累計: ${step.cumulative} ml）</div>
+            ${timerNote}
         `;
-        
+
         pourStepsContainer.appendChild(stepDiv);
     });
     
