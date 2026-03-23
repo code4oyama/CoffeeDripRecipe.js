@@ -1,21 +1,23 @@
 // コーヒードリップレシピ計算アプリ
 
-// --- 画面スリープ防止（KeepAwakeプラグイン） ---
-document.addEventListener('DOMContentLoaded', async function() {
-    if (window.Capacitor && window.Capacitor.isNativePlatform) {
+// --- 画面スリープ防止（Wake Lock API） ---
+let wakeLock = null;
+async function requestWakeLock() {
+    if ('wakeLock' in navigator) {
         try {
-            const { KeepAwake } = window.Capacitor.Plugins || {};
-            if (KeepAwake && typeof KeepAwake.keepAwake === 'function') {
-                await KeepAwake.keepAwake();
-                console.log('KeepAwake: スリープ防止を有効化しました');
-            } else {
-                console.warn('KeepAwakeプラグインが見つかりません');
-            }
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock: スリープ防止を有効化しました');
+            wakeLock.addEventListener('release', () => {
+                console.log('Wake Lock: 解除されました');
+            });
         } catch (e) {
-            console.error('KeepAwakeプラグイン呼び出しエラー', e);
+            console.error('Wake Lock API エラー', e);
         }
+    } else {
+        console.warn('Wake Lock API 非対応ブラウザです');
     }
-});
+}
+document.addEventListener('DOMContentLoaded', requestWakeLock);
 
 // 定数
 const CUP_SIZE = {
